@@ -24,7 +24,11 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - name: 安装依赖
+        run: npm ci --no-audit --fund=false
+        env:
+          npm_config_fetch_retries: '5'
+          npm_config_fetch_retry_maxtimeout: '120000'
       - name: 打包
         run: npm run ${{ matrix.script }}
         env:
