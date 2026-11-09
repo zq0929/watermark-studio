@@ -12,12 +12,12 @@
     text: '仅用于浦发银行汇款额度调整',
     fontKey: 'hei',
     bold: false,
-    sizePct: 0.038,   // 字号 = 画布短边 × sizePct
-    angle: 26,        // 逆时针角度（度）
-    opacity: 0.18,    // 0.02 – 1
+    sizePct: 0.030,   // 字号 = 画布短边 × sizePct
+    angle: 20,        // 逆时针角度（度）
+    opacity: 0.15,    // 0.02 – 1
     color: '#3b3b3b',
-    gapX: 1.8,        // 横向间距（相对字号）
-    gapY: 2.9,        // 纵向上行距（相对字号）
+    gapX: 3.6,        // 横向间距（相对字号）
+    gapY: 5.8,        // 纵向上行距（相对字号）
     stagger: true,    // 交错排布
     layout: 'tile',   // tile 平铺 | center 居中
   };

@@ -8,11 +8,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const OUT = path.join(__dirname, '..', 'docs', 'screenshot.png');
+const PKG = require(path.join(__dirname, '..', 'package.json'));
 
 app.disableHardwareAcceleration();
 app.whenReady().then(async () => {
   ipcMain.handle('app:info', () => ({
-    version: '1.0.0', name: '水印工坊', platform: process.platform,
+    version: PKG.version, name: '水印工坊', platform: process.platform,
     isMac: process.platform === 'darwin', downloads: app.getPath('downloads'),
   }));
   ipcMain.handle('file:write', () => ({ path: '', size: 0 }));

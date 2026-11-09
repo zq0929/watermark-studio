@@ -25,8 +25,8 @@
 
 | 平台 | 版本 | 安装包 |
 | --- | --- | --- |
-| macOS | 11 Big Sur 及以上（Intel 与 Apple Silicon 均可） | `水印工坊-1.0.0-*.dmg` |
-| Windows | Windows 10 / 11（64 位） | `水印工坊-1.0.0-安装程序.exe`（或免安装 `.exe`） |
+| macOS | 11 Big Sur 及以上（Intel 与 Apple Silicon 均可） | `WatermarkStudio-1.0.1-mac-*.dmg` |
+| Windows | Windows 10 / 11（64 位） | `WatermarkStudio-1.0.1-win-x64-setup.exe`（或免安装 `-portable.exe`） |
 
 ## 使用
 
@@ -40,9 +40,9 @@
 | 参数 | 说明 |
 | --- | --- |
 | 水印文字 | 支持多行（换行即分段）；右侧预设一键填入常用用途说明 |
-| 字号 | 相对页面短边的百分比，默认 3.8% —— 页面越大字越大，比例始终一致 |
-| 角度 | 逆时针角度，默认 26°（斜向平铺观感最自然） |
-| 不透明度 | 默认 18%，既能看清文字又不遮挡原件内容 |
+| 字号 | 相对页面短边的百分比，默认 3% —— 页面越大字越大，比例始终一致 |
+| 角度 | 逆时针角度，默认 20° |
+| 不透明度 | 默认 15%，既能看清文字又不遮挡原件内容 |
 | 间距 | 旋转后相邻水印块的空隙，调大更疏、调小更密 |
 | 颜色 | 默认深灰 `#3b3b3b`，另有红/蓝/浅灰/黑色可选，也可自定义 |
 
@@ -72,10 +72,10 @@
 
 | 文件 | 适用平台 |
 | --- | --- |
-| `水印工坊-1.0.0-x64.dmg` | macOS Intel 芯片 |
-| `水印工坊-1.0.0-arm64.dmg` | macOS Apple Silicon（M1/M2/M3/M4） |
-| `水印工坊-1.0.0-安装程序.exe` | Windows 10/11 64 位（安装版，可选安装目录） |
-| `水印工坊-1.0.0-免安装.exe` | Windows 10/11 64 位（绿色免安装） |
+| `WatermarkStudio-1.0.1-mac-x64.dmg` | macOS Intel 芯片 |
+| `WatermarkStudio-1.0.1-mac-arm64.dmg` | macOS Apple Silicon（M1/M2/M3/M4） |
+| `WatermarkStudio-1.0.1-win-x64-setup.exe` | Windows 10/11 64 位（安装版，可选安装目录） |
+| `WatermarkStudio-1.0.1-win-x64-portable.exe` | Windows 10/11 64 位（绿色免安装） |
 
 推送 `v*` 标签或手动触发 `.github/workflows/build.yml`，GitHub Actions 会自动在
 macOS / Windows 上分别打包并上传安装包（不签名）。
@@ -91,8 +91,8 @@ npm start
 ### 打包安装包
 
 ```bash
-npm run dist:mac   # 生成 dist/水印工坊-1.0.0-*.dmg（Intel + Apple Silicon）
-npm run dist:win   # 生成 dist/水印工坊-1.0.0-安装程序.exe / 免安装.exe
+npm run dist:mac   # 生成 dist/WatermarkStudio-1.0.1-mac-*.dmg（Intel + Apple Silicon）
+npm run dist:win   # 生成 dist/WatermarkStudio-1.0.1-win-x64-{setup,portable}.exe
 npm run dist:all   # 两个平台一起打
 ```
 

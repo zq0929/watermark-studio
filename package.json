@@ -1,7 +1,7 @@
 {
   "name": "watermark-studio",
   "productName": "水印工坊",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "本地批量给图片与 PDF 添加水印（macOS / Windows 双端）",
   "repository": {
     "type": "git",
@@ -77,7 +77,8 @@
             "arm64"
           ]
         }
-      ]
+      ],
+      "artifactName": "WatermarkStudio-${version}-mac-${arch}.${ext}"
     },
     "dmg": {
       "title": "水印工坊 ${version}",
@@ -93,8 +94,7 @@
           "type": "link",
           "path": "/Applications"
         }
-      ],
-      "artifactName": "水印工坊-${version}-${arch}.${ext}"
+      ]
     },
     "win": {
       "icon": "build/icon.png",
@@ -120,10 +120,10 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "水印工坊",
-      "artifactName": "水印工坊-${version}-安装程序.${ext}"
+      "artifactName": "WatermarkStudio-${version}-win-${arch}-setup.${ext}"
     },
     "portable": {
-      "artifactName": "水印工坊-${version}-免安装.${ext}"
+      "artifactName": "WatermarkStudio-${version}-win-${arch}-portable.${ext}"
     }
   }
 }

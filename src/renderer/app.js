@@ -8,7 +8,7 @@
 
   const $ = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
-  const SETTINGS_KEY = 'watermark-studio.settings.v2';
+  const SETTINGS_KEY = 'watermark-studio.settings.v3';
 
   const state = {
     items: [],
