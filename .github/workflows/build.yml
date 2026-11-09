@@ -33,6 +33,9 @@ jobs:
         run: npm run ${{ matrix.script }}
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          # electron-builder 需要从 GitHub Releases 拉 nsis / winCodeSign 等工具包；
+          # 近期 GitHub CDN 对 winCodeSign-2.6.0 持续 504，改用镜像更稳。
+          ELECTRON_BUILDER_BINARIES_MIRROR: https://npmmirror.com/mirrors/electron-builder-binaries/
       - name: 冒烟自检
         if: runner.os == 'macOS'
         run: npm run smoke -- --out=./.tmp-smoke

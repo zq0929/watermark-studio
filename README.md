@@ -93,6 +93,12 @@ npm start
 ```bash
 npm run dist:mac   # 生成 dist/WatermarkStudio-1.0.1-mac-*.dmg（Intel + Apple Silicon）
 npm run dist:win   # 生成 dist/WatermarkStudio-1.0.1-win-x64-{setup,portable}.exe
+
+打 Windows 包时 electron-builder 会从 GitHub Releases 下载 `nsis` / `winCodeSign` 工具包，若遇到 504 或下载很慢，可先设置镜像：
+
+```bash
+export ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/
+```
 npm run dist:all   # 两个平台一起打
 ```
 
