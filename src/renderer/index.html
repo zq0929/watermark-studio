@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self' data:;" />
+  <title>水印工坊</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="drag-overlay" class="drag-overlay">
+    <div class="drag-box">
+      <div class="drag-icon">⇩</div>
+      <div class="drag-title">松开即可添加</div>
+      <div class="drag-sub">支持 JPG / PNG / WebP / BMP / GIF 图片与 PDF 文件</div>
+    </div>
+  </div>
+
+  <header class="titlebar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M12 3.2 6.4 8.9a7.9 7.9 0 1 0 11.2 0L12 3.2Z" />
+          <path d="M9 12.6h6M12 9.6v6" opacity=".55" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>水印工坊</h1>
+        <p>图片 / PDF 批量加水印</p>
+      </div>
+    </div>
+    <div class="titlebar-right">
+      <span class="pill"><span class="pill-dot"></span>100% 本地处理 · 文件不上传</span>
+      <button id="btn-help" class="btn icon-btn" title="使用说明与快捷键">?</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- 文件列 -->
+    <aside class="panel files-panel">
+      <div class="panel-head">
+        <h2>文件队列</h2>
+        <span id="file-count" class="badge">0</span>
+      </div>
+
+      <div id="dropzone" class="dropzone" tabindex="0" role="button">
+        <div class="dz-icon">＋</div>
+        <div class="dz-title">拖入文件，或点击选择</div>
+        <div class="dz-sub">图片 / PDF · 支持多选与文件夹</div>
+      </div>
+
+      <ul id="file-list" class="file-list"></ul>
+
+      <div id="file-empty" class="file-empty">
+        <p>队列为空</p>
+        <p class="hint">添加文件后可在这里切换预览</p>
+      </div>
+
+      <div class="files-actions">
+        <button id="btn-add" class="btn">添加文件</button>
+        <button id="btn-add-folder" class="btn">文件夹</button>
+        <button id="btn-clear" class="btn subtle">清空</button>
+      </div>
+    </aside>
+
+    <!-- 预览列 -->
+    <section class="panel preview-panel">
+      <div class="panel-head">
+        <h2>预览</h2>
+        <span id="preview-note" class="note"></span>
+      </div>
+      <div id="preview-stage" class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+        <div id="preview-empty" class="preview-empty">
+          <div class="pe-icon">🖼</div>
+          <p>选择左侧文件查看水印效果</p>
+          <p class="hint">调整右侧参数，预览实时更新</p>
+        </div>
+      </div>
+      <div class="preview-foot">
+        <span id="preview-meta" class="meta"></span>
+        <span class="spacer"></span>
+        <button id="btn-open-result" class="btn tiny" disabled>打开结果文件</button>
+      </div>
+    </section>
+
+    <!-- 设置列 -->
+    <aside class="panel settings-panel">
+      <div class="panel-head">
+        <h2>水印设置</h2>
+        <button id="btn-reset" class="btn tiny subtle">恢复默认</button>
+      </div>
+
+      <div class="settings-scroll">
+        <section class="group">
+          <label class="group-label" for="opt-text">水印文字</label>
+          <textarea id="opt-text" rows="2" spellcheck="false" placeholder="例如：仅用于浦发银行汇款额度调整"></textarea>
+          <div id="preset-chips" class="chips"></div>
+        </section>
+
+        <section class="group">
+          <div class="group-label-row">
+            <span class="group-label">样式</span>
+            <label class="check"><input type="checkbox" id="opt-bold" /> <span>加粗</span></label>
+          </div>
+
+          <div class="field">
+            <span class="field-label">字体</span>
+            <select id="opt-font">
+              <option value="hei">黑体 / 无衬线</option>
+              <option value="song">宋体 / 衬线</option>
+              <option value="kai">楷体</option>
+            </select>
+          </div>
+
+          <div class="slider-row">
+            <span class="field-label">字号</span>
+            <input type="range" id="opt-size" min="1" max="12" step="0.1" />
+            <span class="slider-val" id="val-size"></span>
+          </div>
+
+          <div class="slider-row">
+            <span class="field-label">角度</span>
+            <input type="range" id="opt-angle" min="-90" max="90" step="1" />
+            <span class="slider-val" id="val-angle"></span>
+          </div>
+          <div class="angle-quick">
+            <button class="btn tiny" data-angle="0">0°</button>
+            <button class="btn tiny" data-angle="26">26°</button>
+            <button class="btn tiny" data-angle="45">45°</button>
+            <button class="btn tiny" data-angle="-26">-26°</button>
+          </div>
+
+          <div class="slider-row">
+            <span class="field-label">不透明度</span>
+            <input type="range" id="opt-opacity" min="2" max="80" step="1" />
+            <span class="slider-val" id="val-opacity"></span>
+          </div>
+
+          <div class="slider-row">
+            <span class="field-label">间距</span>
+            <input type="range" id="opt-gap" min="0.4" max="2" step="0.05" value="1" />
+            <span class="slider-val" id="val-gap"></span>
+          </div>
+
+          <div class="field">
+            <span class="field-label">颜色</span>
+            <div class="swatches">
+              <button class="swatch" data-color="#3b3b3b" style="--c:#3b3b3b" title="深灰"></button>
+              <button class="swatch" data-color="#8a8a8a" style="--c:#8a8a8a" title="浅灰"></button>
+              <button class="swatch" data-color="#c0392b" style="--c:#c0392b" title="印章红"></button>
+              <button class="swatch" data-color="#2f5bd6" style="--c:#2f5bd6" title="深蓝"></button>
+              <button class="swatch" data-color="#ffffff" style="--c:#ffffff" title="白色"></button>
+              <label class="swatch custom"><input type="color" id="opt-color" value="#3b3b3b" /></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field-label">排布</span>
+            <div class="seg" id="seg-layout">
+              <button data-layout="tile" class="on">平铺</button>
+              <button data-layout="center">居中单条</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="group">
+          <span class="group-label">输出</span>
+
+          <div class="field">
+            <span class="field-label">图片格式</span>
+            <select id="opt-format">
+              <option value="auto">跟随原格式</option>
+              <option value="jpg">JPG（白底）</option>
+              <option value="png">PNG</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <span class="field-label">PDF 页码</span>
+            <input type="text" id="opt-range" placeholder="全部，或 1-3,5" />
+          </div>
+
+          <div class="field">
+            <span class="field-label">文件名后缀</span>
+            <input type="text" id="opt-suffix" placeholder="_水印" />
+          </div>
+
+          <div class="field">
+            <span class="field-label">输出位置</span>
+            <div class="seg" id="seg-output">
+              <button data-mode="same" class="on">源文件旁</button>
+              <button data-mode="custom">指定文件夹</button>
+            </div>
+          </div>
+          <div id="out-dir-row" class="out-dir-row">
+            <span id="out-dir-label" class="out-dir-label">未选择</span>
+            <button id="btn-pick-dir" class="btn tiny">选择…</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="run-bar">
+        <div class="progress"><div id="progress-fill" class="progress-fill"></div></div>
+        <button id="btn-run" class="btn primary">
+          <span id="run-label">开始处理</span>
+        </button>
+        <div id="run-summary" class="run-summary"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="statusbar">
+    <span id="status-text">就绪 · 拖入文件开始</span>
+    <span class="spacer"></span>
+    <button id="btn-open-output" class="link-btn" disabled>打开输出文件夹</button>
+    <span class="sep">·</span>
+    <span id="version-text" class="version"></span>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="help-modal" class="modal" hidden>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>使用说明</h3>
+        <button id="btn-help-close" class="btn icon-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li>把图片或 PDF 拖进左侧队列（也可点「添加文件 / 文件夹」）。</li>
+          <li>在右侧调整水印文字与样式，中间实时预览效果。</li>
+          <li>点「开始处理」，结果默认写到源文件旁边，文件名加后缀。</li>
+        </ol>
+        <h4>快捷键</h4>
+        <ul class="kbd-list">
+          <li><kbd>⌘/Ctrl</kbd> + <kbd>O</kbd> 添加文件</li>
+          <li><kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd> 添加文件夹</li>
+          <li><kbd>⌘/Ctrl</kbd> + <kbd>Enter</kbd> 开始处理</li>
+          <li><kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd> 打开输出文件夹</li>
+        </ul>
+        <h4>说明</h4>
+        <ul>
+          <li>全部处理都在本机完成，不联网、不上传、不留存。</li>
+          <li>PDF 水印以透明图层叠加，原文字内容不变；已加密的 PDF 暂不支持。</li>
+          <li>图片会按 EXIF 方向自动摆正；GIF 仅处理第一帧。</li>
+          <li>PDF 预览为「页面示意」，展示真实页面尺寸、方向与平铺效果；处理完成后可点「打开结果文件」用系统阅读器核对。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/pdf-lib.min.js"></script>
+  <script src="engine/render.js"></script>
+  <script src="engine/image.js"></script>
+  <script src="engine/pdf.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

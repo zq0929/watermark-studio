@@ -1,0 +1,129 @@
+{
+  "name": "watermark-studio",
+  "productName": "水印工坊",
+  "version": "1.0.0",
+  "description": "本地批量给图片与 PDF 添加水印（macOS / Windows 双端）",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zq0929/watermark-studio.git"
+  },
+  "homepage": "https://github.com/zq0929/watermark-studio#readme",
+  "bugs": {
+    "url": "https://github.com/zq0929/watermark-studio/issues"
+  },
+  "keywords": [
+    "watermark",
+    "pdf",
+    "image",
+    "electron",
+    "batch",
+    "水印",
+    "privacy"
+  ],
+  "main": "src/main/main.js",
+  "author": {
+    "name": "zq0929",
+    "url": "https://github.com/zq0929"
+  },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "smoke": "electron test/smoke.js",
+    "icon": "electron scripts/make-icon.js",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:all": "electron-builder --mac --win"
+  },
+  "devDependencies": {
+    "electron": "33.4.11",
+    "electron-builder": "25.1.8",
+    "pdf-lib": "1.17.1"
+  },
+  "build": {
+    "appId": "com.watermarkstudio.desktop",
+    "productName": "水印工坊",
+    "copyright": "Copyright © 2026 水印工坊",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/.DS_Store"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.png",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "水印工坊 ${version}",
+      "contents": [
+        {
+          "x": 140,
+          "y": 200,
+          "type": "file"
+        },
+        {
+          "x": 400,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "artifactName": "水印工坊-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "水印工坊",
+      "artifactName": "水印工坊-${version}-安装程序.${ext}"
+    },
+    "portable": {
+      "artifactName": "水印工坊-${version}-免安装.${ext}"
+    }
+  }
+}
